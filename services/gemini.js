@@ -29,7 +29,7 @@ export const analyzeExamPapers = async (
         return transformBackendData(data, examName);
 
     } catch (error) {
-        console.error("Analysis failed : ", error);
+        console.error("Analysis failed :", error);
         // Fallback to mock data if API fails (for demonstration/reliability)
         return getMockAnalysisData(examName);
     }
