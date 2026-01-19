@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClutchPrep - AI Exam Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              border: "hsl(var(--border))",
+              input: "hsl(var(--input))",
+              ring: "hsl(var(--ring))",
+              background: "hsl(var(--background))",
+              foreground: "hsl(var(--foreground))",
+              primary: "#10b981", // Emerald 500
+            },
+            animation: {
+              first: "moveVertical 30s ease infinite",
+              second: "moveInCircle 20s reverse infinite",
+              third: "moveInCircle 40s linear infinite",
+              fourth: "moveHorizontal 40s ease infinite",
+              fifth: "moveInCircle 20s ease infinite",
+              "pulse-slow": "pulse-slow 3s ease-in-out infinite",
+              scroll: "scroll 30s linear infinite",
+            },
+            keyframes: {
+              moveHorizontal: {
+                "0%": {
+                  transform: "translateX(-50%) translateY(-10%)",
+                },
+                "50%": {
+                  transform: "translateX(50%) translateY(10%)",
+                },
+                "100%": {
+                  transform: "translateX(-50%) translateY(-10%)",
+                },
+              },
+              moveInCircle: {
+                "0%": {
+                  transform: "rotate(0deg)",
+                },
+                "50%": {
+                  transform: "rotate(180deg)",
+                },
+                "100%": {
+                  transform: "rotate(360deg)",
+                },
+              },
+              moveVertical: {
+                "0%": {
+                  transform: "translateY(-50%)",
+                },
+                "50%": {
+                  transform: "translateY(50%)",
+                },
+                "100%": {
+                  transform: "translateY(-50%)",
+                },
+              },
+              "pulse-slow": {
+                '0%, 100%': {
+                    transform: 'translateX(-100%)',
+                },
+                '50%': {
+                    transform: 'translateX(100%)',
+                },
+              },
+              scroll: {
+                "0%": {
+                  transform: "translateX(0)",
+                },
+                "100%": {
+                  transform: "translateX(-50%)",
+                },
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      :root {
+        --background: 0 0% 0%; /* Black */
+        --foreground: 0 0% 100%; /* White */
+        --card: 0 0% 3%;
+        --card-foreground: 0 0% 100%;
+        --popover: 0 0% 3%;
+        --popover-foreground: 0 0% 100%;
+        --primary: 142.1 76.2% 36.3%;
+        --primary-foreground: 355.7 100% 97.3%;
+        --secondary: 240 3.7% 15.9%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 240 3.7% 15.9%;
+        --muted-foreground: 240 5% 64.9%;
+        --accent: 240 3.7% 15.9%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 240 3.7% 15.9%;
+        --input: 240 3.7% 15.9%;
+        --ring: 142.4 71.8% 29.2%;
+        --radius: 0.5rem;
+      }
+      /* Custom scrollbar for dark theme */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #18181b; /* zinc-900 */
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #3f3f46; /* zinc-700 */
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #52525b; /* zinc-600 */
+      }
+      @keyframes shine {
+        0% {
+            transform: translateX(-100%);
+        }
+        50% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+      }
+
+      /* AI Loader Animations */
+      @keyframes loader-rotate {
+        0% {
+          transform: rotate(90deg);
+          box-shadow: 0 10px 20px 0 #fff inset,
+            0 20px 30px 0 #a7f3d0 inset,
+            0 60px 60px 0 #10b981 inset; /* Adjusted colors to Emerald theme */
+        }
+        50% {
+          transform: rotate(270deg);
+          box-shadow: 0 10px 20px 0 #fff inset,
+            0 20px 10px 0 #34d399 inset,
+            0 40px 60px 0 #059669 inset;
+        }
+        100% {
+          transform: rotate(450deg);
+          box-shadow: 0 10px 20px 0 #fff inset,
+            0 20px 30px 0 #a7f3d0 inset,
+            0 60px 60px 0 #10b981 inset;
+        }
+      }
+
+      @keyframes loader-letter-anim {
+        0%,
+        100% {
+          opacity: 0.4;
+          transform: translateY(0);
+        }
+        20% {
+          opacity: 1;
+          transform: scale(1.15);
+        }
+        40% {
+          opacity: 0.7;
+          transform: translateY(0);
+        }
+      }
+
+      .loader-wrapper {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 120px;
+        height: 120px;
+      }
+
+      .loader {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        animation: loader-rotate 2.5s infinite linear;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+      }
+
+      .loader-letters-container {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        gap: 2px;
+      }
+
+      .loader-letter {
+        font-family: monospace;
+        font-size: 1rem;
+        font-weight: bold;
+        color: white;
+        text-transform: uppercase;
+        animation: loader-letter-anim 2s infinite ease-in-out;
+        text-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.36.0",
+    "recharts": "https://esm.sh/recharts@^3.6.0",
+    "clsx": "https://esm.sh/clsx@^2.1.0",
+    "tailwind-merge": "https://esm.sh/tailwind-merge@^2.2.1",
+    "framer-motion": "https://esm.sh/framer-motion@^11.0.8",
+    "simplex-noise": "https://esm.sh/simplex-noise@4.0.1",
+    "@radix-ui/react-slot": "https://esm.sh/@radix-ui/react-slot@^1.2.4",
+    "class-variance-authority": "https://esm.sh/class-variance-authority@^0.7.1",
+    "styled-components": "https://esm.sh/styled-components@6.1.8?deps=react@19.2.3,react-dom@19.2.3"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-black text-white antialiased">
+    <div id="root"></div>
+  <script type="module" src="/index.jsx"></script>
+</body>
+</html>

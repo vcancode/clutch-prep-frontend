@@ -1,0 +1,9 @@
+
+:root {
+  --primary: #10b981;
+  --background: #000000;
+}
+
+.dark {
+  --background: oklch(0 0 0);
+}
