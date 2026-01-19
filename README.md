@@ -147,12 +147,3 @@ Licensed under the terms specified here:
 **ClutchPrep** — *Study only what wins you marks.*
 
 ---
-
-If you want next:
-
-* Deployment guide (Vercel)
-* Environment separation (dev / prod)
-* API typings & validation
-* README badges + screenshots
-
-Say **which one**.
